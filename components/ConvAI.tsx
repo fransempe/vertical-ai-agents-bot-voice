@@ -26,6 +26,31 @@ async function getSignedUrl(): Promise<string> {
   return data.signedUrl;
 }
 
+async function updateMeetStatus(meetId: string | null, status: "active" | "completed") {
+  if (!meetId) {
+    console.log("No meetId provided, skipping status update");
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/meets/${meetId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    });
+    
+    if (response.ok) {
+      console.log(`Meet ${meetId} status updated to: ${status}`);
+    } else {
+      console.error(`Failed to update meet ${meetId} status:`, response.statusText);
+    }
+  } catch (error) {
+    console.error("Error updating meet status:", error);
+  }
+}
+
 interface ConvAIProps {
   meetId: string | null;
   candidateId: string | null;
@@ -38,10 +63,15 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
     onConnect: () => {
       console.log("connected");
       conversationHistoryRef.current = [];
+      // Actualizar el estado del meet a "active" cuando se conecta
+      updateMeetStatus(meetId, "active");
     },
     onDisconnect: async () => {
       console.log("disconnected");
       console.log("Final conversation:", conversationHistoryRef.current);
+      
+      // Actualizar el estado del meet a "completed" cuando se desconecta
+      await updateMeetStatus(meetId, "completed");
       
       try {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL +"/api/conversations", {
