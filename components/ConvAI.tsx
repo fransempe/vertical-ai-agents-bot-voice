@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import * as React from "react";
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@elevenlabs/react";
 import { cn } from "@/lib/utils";
@@ -58,6 +59,7 @@ interface ConvAIProps {
 
 export function ConvAI({ meetId, candidateId }: ConvAIProps) {
   const conversationHistoryRef = React.useRef<{source: "ai" | "user", message: string}[]>([]);
+  const router = useRouter();
 
   const conversation = useConversation({
     onConnect: () => {
@@ -137,25 +139,38 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
 
   const stopConversation = useCallback(async () => {
     await conversation.endSession();
-  }, [conversation]);
+    const query = new URLSearchParams();
+    if (meetId) query.set("meet_id", meetId);
+    if (candidateId) query.set("candidate_id", candidateId);
+    router.push(`/interview/closing${query.toString() ? `?${query.toString()}` : ""}`);
+  }, [conversation, router, meetId, candidateId]);
 
   return (
-    <div className={"flex justify-center items-center gap-x-4"}>
-      <Card className={"rounded-3xl"}>
-        <CardContent>
+    <div className={"flex justify-center items-center gap-x-4 w-full"}>
+      <Card
+        className={
+          "relative rounded-3xl overflow-hidden border-0 shadow-2xl max-w-xl w-full bg-card"
+        }
+      >
+        <div
+          className="absolute inset-0 bg-[url('/images/frame-team-blue.png')] bg-no-repeat bg-fixed bg-center opacity-90"
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-white/70 dark:bg-black/40" aria-hidden />
+        <CardContent className="relative">
           <CardHeader>
-            <CardTitle className={"text-center"}>
+            <CardTitle className={"text-center text-2xl font-semibold text-primary"}>
               {conversation.status === "connected"
                 ? conversation.isSpeaking
-                  ? `Agent is speaking`
-                  : "Agent is listening"
-                : "Disconnected"}
+                  ? `El agente está hablando`
+                  : "El agente está escuchando"
+                : "Entrevista desconectada"}
             </CardTitle>
           </CardHeader>
-          <div className={"flex flex-col gap-y-4 text-center"}>
+          <div className={"flex flex-col gap-y-6 text-center items-center"}>
             <div
               className={cn(
-                "orb my-16 mx-12",
+                "orb my-12 mx-12",
                 conversation.status === "connected" && conversation.isSpeaking
                   ? "orb-active animate-orb"
                   : conversation.status === "connected"
@@ -164,25 +179,26 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
               )}
             ></div>
 
+
             <Button
-              variant={"outline"}
-              className={"rounded-full"}
-              size={"lg"}
+              variant={"default"}
+              className={"rounded-full min-w-60 shadow-lg"}
+              size={"xl"}
               disabled={
                 conversation !== null && conversation.status === "connected"
               }
               onClick={startConversation}
             >
-              Start conversation
+              Iniciar entrevista
             </Button>
             <Button
               variant={"outline"}
-              className={"rounded-full"}
+              className={"rounded-full min-w-60"}
               size={"lg"}
-              disabled={conversation === null}
+              disabled={conversation === null || conversation.status !== "connected"}
               onClick={stopConversation}
             >
-              End conversation
+              Finalizar
             </Button>
           </div>
         </CardContent>

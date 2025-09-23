@@ -1,5 +1,38 @@
 import { NextResponse } from "next/server";
 
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: meetId } = await params;
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/api/meets/${meetId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Force dynamic fetch in Next.js edge/runtime
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: "Failed to fetch meet" },
+        { status: 500 }
+      );
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Error fetching meet:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

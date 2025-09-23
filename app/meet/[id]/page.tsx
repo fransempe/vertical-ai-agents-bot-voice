@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Interview } from "@/types/interview";
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 const getStatusColor = (status: Interview['status']) => {
   switch (status) {
@@ -146,12 +147,21 @@ function MeetContent() {
   }
 
   return (
-    <div className="min-h-screen from-slate-50 to-slate-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl shadow-xl">
+    <div className="min-h-screen w-screen grid grid-cols-1 md:grid-cols-2">
+      <div className="relative w-full h-[40vh] md:h-screen">
+        <div className="absolute inset-0 bg-[url('/images/bg-interacciona.svg')] bg-no-repeat bg-cover bg-center" aria-hidden />
+        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 flex justify-center">
+          <div className="backdrop-blur-[2px] text-white  px-4 py-3 max-w-xl text-center">
+            <p className="text-lg sm:text-base md:text-xl font-medium">You&apos;re about to join an AI-powered interview session</p>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-center p-4 h-full md:h-screen overflow-auto">
+        <Card className="w-full max-w-2xl shadow-xl relative overflow-hidden bg-cover bg-center">
         <CardHeader className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-sm font-bold">AI</span>
+            <div className="w-8 h-8  rounded-lg flex items-center justify-center overflow-hidden">
+              <Image src="/images/acciona-logo-mini.png" alt="Acciona" width={36} height={36} className="w-12 h-10 object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold">Interview Meeting</CardTitle>
           </div>
@@ -162,26 +172,26 @@ function MeetContent() {
         
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-600">Interview ID</label>
+            <div className="space-y-1">
+              <label className="text-lg text-gray-600">Interview ID: </label>
               <p className="font-mono text-lg">{interview.id}</p>
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-600">Status</label>
+              <label className="text-lg font-medium text-gray-600">Status: </label>
               <Badge className={getStatusColor(interview.status)}>
                 {interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
               </Badge>
             </div>
             
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-600">Type</label>
-              <p className="text-lg">{getTypeLabel(interview.type)}</p>
+            <div className="flex">
+              <label className="text-lg text-gray-600">Type: </label>
+              <p className="text-lg ms-2">{getTypeLabel(interview.type)}</p>
             </div>
             
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-600">Duration</label>
-              <p className="text-lg">30 minutes</p>
+            <div className="flex">
+              <label className="text-lg text-gray-600">Duration: </label>
+              <p className="text-lg ms-2">8 minutes</p>
             </div>
           </div>
           
@@ -194,30 +204,17 @@ function MeetContent() {
               <p className="text-sm text-gray-500">{interview.candidate_id}</p>
             </div>
           </div>
-          
-          <div className="border-t pt-4">
-            <label className="text-sm font-medium text-gray-600">Scheduled Time</label>
-            <p className="text-lg mt-1">
-              {interview.scheduledTime?.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
-            </p>
-          </div>
-          
+                    
           <div className="pt-6">
             <Link href={`/interview?token=${token}&meet_id=${interview.id}&candidate_id=${interview.candidate_id}`} className="w-full">
-              <Button className="w-full text-lg py-6 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+              <Button className="w-full text-lg py-6 bg-[#292AD3] hover:bg-[#2325bf] text-white transition-all duration-200 transform ">
                 Join Interview
               </Button>
             </Link>
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }
