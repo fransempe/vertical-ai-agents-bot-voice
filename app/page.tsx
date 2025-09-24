@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function Home() {
+function AutoLogin() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,6 @@ export default function Home() {
           throw new Error(data?.message || 'Authentication failed');
         }
 
-        // On success, redirect. Cookie is set by the API route.
         const redirectUrl = meetId ? `/meet/${meetId}?token=${token}` : '/interview';
         if (!cancelled) router.replace(redirectUrl);
       } catch (e: unknown) {
@@ -57,5 +56,13 @@ export default function Home() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" /></div>}>
+      <AutoLogin />
+    </Suspense>
   );
 }
