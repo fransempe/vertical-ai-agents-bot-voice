@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 body {
-    font-family: var(--font-sans, -apple-system, "system-ui", sans-serif);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
 }
+
 
 @layer base {
     :root {

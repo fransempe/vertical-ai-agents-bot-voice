@@ -34,21 +34,23 @@ function InterviewContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10">
-        <div className="text-white">Cargando entrevista…</div>
+      <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10 bg-[url('/images/bg-blue.png')] bg-cover bg-no-repeat bg-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-transparent"></div>
+        </div>
       </div>
     );
   }
 
   if (!isAllowed) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10">
+      <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10 bg-[url('/images/bg-blue.png')] bg-cover bg-no-repeat bg-center">
         <div className="relative rounded-3xl overflow-hidden border-0 shadow-2xl max-w-xl w-full bg-card">
           <div className="absolute inset-0 bg-[url('/images/frame-team-blue.png')] bg-center opacity-90" aria-hidden />
           <div className="absolute inset-0 bg-white/75 dark:bg-black/40" aria-hidden />
           <div className="relative p-8 sm:p-10 text-center">
-            <h1 className="text-2xl font-semibold text-primary">No se puede iniciar la entrevista</h1>
-            <p className="mt-3 text-muted-foreground">La reunión no está en estado pendiente. Verifica el enlace o contacta al reclutador.</p>
+            <h1 className="text-2xl font-semibold text-primary">Cannot Start Interview</h1>
+            <p className="mt-3 text-muted-foreground">The meeting is not in a pending state. Please check the link or contact the recruiter.</p>
           </div>
         </div>
       </div>
@@ -56,7 +58,7 @@ function InterviewContent() {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10">
+    <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10 bg-[url('/images/bg-blue.png')] bg-cover bg-no-repeat bg-center">
       <main className="w-full flex flex-col items-center">
         <ConvAI meetId={meetId} candidateId={candidateId} />
       </main>

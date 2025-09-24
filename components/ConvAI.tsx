@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import * as React from "react";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Image from "next/image";
 import { useConversation } from "@elevenlabs/react";
 import { cn } from "@/lib/utils";
 
@@ -159,13 +160,9 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
         <div className="absolute inset-0 bg-white/70 dark:bg-black/40" aria-hidden />
         <CardContent className="relative">
           <CardHeader>
-            <CardTitle className={"text-center text-2xl font-semibold text-primary"}>
-              {conversation.status === "connected"
-                ? conversation.isSpeaking
-                  ? `El agente está hablando`
-                  : "El agente está escuchando"
-                : "Entrevista desconectada"}
-            </CardTitle>
+            <div className="w-full flex items-center justify-center py-5">
+              <Image src="/images/acciona-play.svg" alt="Acciona Play" width={220} height={36} />
+            </div>
           </CardHeader>
           <div className={"flex flex-col gap-y-6 text-center items-center"}>
             <div
@@ -178,6 +175,10 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
                   : "orb-inactive"
               )}
             ></div>
+
+            <div className="text-primary text-lg font-medium">
+              {conversation.status === "connected" ? "Entrevista conectada" : "Entrevista desconectada"}
+            </div>
 
 
             <Button
