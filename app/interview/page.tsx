@@ -22,7 +22,7 @@ function InterviewContent() {
         if (!res.ok) throw new Error('Failed to fetch meet');
         const data = await res.json();
         // Expecting data.status from backend: 'pending' | 'active' | 'completed'
-        setIsAllowed(data?.status === 'pending');
+        setIsAllowed(data?.status === 'pending' || data?.status === 'active');
       } catch {
         setIsAllowed(false);
       } finally {
