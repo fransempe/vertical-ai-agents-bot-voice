@@ -66,8 +66,6 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
     onConnect: () => {
       console.log("connected");
       conversationHistoryRef.current = [];
-      // Actualizar el estado del meet a "active" cuando se conecta
-      updateMeetStatus(meetId, "active");
     },
     onDisconnect: async () => {
       console.log("disconnected");

@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 import { Interview } from "@/types/interview";
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -55,6 +56,7 @@ const LoadingSpinner = () => (
 function MeetContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
+  const router = useRouter();
 
   const [interview, setInterview] = useState<Interview | null>(null);
   const [loading, setLoading] = useState(true);
@@ -268,14 +270,26 @@ function MeetContent() {
             </div>
 
             <div className="pt-6">
-              <Link
-                href={`/interview?token=${token}&meet_id=${interview.id}&candidate_id=${interview.candidate_id}`}
-                className="w-full"
+              <Button
+                className="w-full text-lg py-6 bg-[#292AD3] hover:bg-[#2325bf] text-white transition-all duration-200 transform "
+                onClick={async () => {
+                  try {
+                    await fetch(`/api/meets/${interview.id}`, {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ status: "active" }),
+                    });
+                  } catch (e) {
+                    console.error("Failed to set meet active before joining", e);
+                  } finally {
+                    router.push(
+                      `/interview?token=${token}&meet_id=${interview.id}&candidate_id=${interview.candidate_id}`
+                    );
+                  }
+                }}
               >
-                <Button className="w-full text-lg py-6 bg-[#292AD3] hover:bg-[#2325bf] text-white transition-all duration-200 transform ">
-                  Join Interview
-                </Button>
-              </Link>
+                Join Interview
+              </Button>
             </div>
           </CardContent>
         </Card>
