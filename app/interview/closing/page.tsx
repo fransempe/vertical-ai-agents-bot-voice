@@ -1,14 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function InterviewClosingPage() {
-  const router = useRouter();
 
   function handleClose() {
     window.close();
-    setTimeout(() => router.push("/"), 50);
+    // The instruction states that the main page should not load when closing the window.
+    // Therefore, the navigation to the homepage is removed.
   }
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10 bg-[url('/images/bg-blue.png')] bg-cover bg-no-repeat bg-center">
