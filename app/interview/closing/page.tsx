@@ -5,9 +5,7 @@ import Image from "next/image";
 export default function InterviewClosingPage() {
 
   function handleClose() {
-    window.close();
-    // The instruction states that the main page should not load when closing the window.
-    // Therefore, the navigation to the homepage is removed.
+    window.location.replace('https://www.acciona-it.com/');
   }
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-6 sm:p-10 bg-[url('/images/bg-blue.png')] bg-cover bg-no-repeat bg-center">
