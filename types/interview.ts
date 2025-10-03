@@ -3,6 +3,7 @@ export interface Interview {
   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled' | 'pending';
   type: 'technical' | 'behavioral' | 'cultural-fit' | 'screening';
   candidate_id: string;
+  jd_interviews_id: string;
   link: string;
   candidate: {
     name: string;

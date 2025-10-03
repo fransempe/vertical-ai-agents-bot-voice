@@ -23,16 +23,16 @@ export default function InterviewClosingPage() {
             <Image src="/images/acciona-play.svg" alt="Acciona Play" width={260} height={36} />
           </div>
           <h1 className="text-2xl font-semibold text-primary">
-            Thank you for your time
+            Gracias por tu tiempo
           </h1>
           <p className="text-muted-foreground">
-            The interview has concluded. Our team will review your responses and
-            contact you with the next steps. Meanwhile, you can close this
-            window or return to the homepage.
+            La entrevista ha concluido. Nuestro equipo revisará tus respuestas y
+            se pondrá en contacto contigo para los próximos pasos. Mientras tanto, puedes cerrar esta
+            ventana o volver a la página de inicio.
           </p>
           <div className="flex mt-2">
             <Button className="rounded-full" size="lg" onClick={handleClose}>
-              Close window
+              Cerrar ventana
             </Button>
           </div>
         </div>

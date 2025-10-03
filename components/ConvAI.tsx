@@ -95,6 +95,12 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
       } catch (error) {
         console.error("Error saving conversation:", error);
       }
+
+      // Redirigir a la pantalla de closing después de guardar la conversación
+      const query = new URLSearchParams();
+      if (meetId) query.set("meet_id", meetId);
+      if (candidateId) query.set("candidate_id", candidateId);
+      router.push(`/interview/closing${query.toString() ? `?${query.toString()}` : ""}`);
     },
     onError: error => {
       console.log("Conversation error:", error);
