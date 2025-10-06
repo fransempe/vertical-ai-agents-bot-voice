@@ -19,8 +19,11 @@ async function requestMicrophonePermission() {
   }
 }
 
-async function getSignedUrl(): Promise<string> {
-  const response = await fetch("/api/signed-url");
+async function getSignedUrl(meetId: string | null): Promise<string> {
+  if (!meetId) {
+    throw Error("meet_id is required to get signed url");
+  }
+  const response = await fetch(`/api/signed-url?meet_id=${meetId}`);
   if (!response.ok) {
     throw Error("Failed to get signed url");
   }
@@ -126,7 +129,7 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
       return;
     }
     try {
-      const signedUrl = await getSignedUrl();
+      const signedUrl = await getSignedUrl(meetId);
       console.log("Signed URL:", signedUrl);
       const conversationId = await conversation.startSession({ signedUrl });
       console.log("Conversation ID:", conversationId);

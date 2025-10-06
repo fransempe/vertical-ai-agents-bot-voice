@@ -1,25 +1,66 @@
 import { NextResponse } from "next/server";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import { NextRequest } from "next/server";
 
-export async function GET() {
-  console.log("Environment check - AGENT_ID exists:", !!process.env.AGENT_ID);
+export async function GET(request: NextRequest) {
   console.log("Environment check - ELEVENLABS_API_KEY exists:", !!process.env.ELEVENLABS_API_KEY);
   
-  const agentId = process.env.AGENT_ID;
   const apiKey = process.env.ELEVENLABS_API_KEY;
-  
-  if (!agentId) {
-    console.error("AGENT_ID is not set in environment variables");
-    return NextResponse.json(
-      { error: "AGENT_ID is not configured" },
-      { status: 500 }
-    );
-  }
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   
   if (!apiKey) {
     console.error("ELEVENLABS_API_KEY is not set in environment variables");
     return NextResponse.json(
       { error: "ELEVENLABS_API_KEY is not configured" },
+      { status: 500 }
+    );
+  }
+
+  // Get meet_id from query params
+  const meetId = request.nextUrl.searchParams.get('meet_id');
+  
+  if (!meetId) {
+    console.error("meet_id is required");
+    return NextResponse.json(
+      { error: "meet_id is required" },
+      { status: 400 }
+    );
+  }
+
+  // Fetch agent_id dynamically from API
+  let agentId: string;
+  try {
+    console.log("Fetching agent_id for meet_id:", meetId);
+    const agentResponse = await fetch(`${apiUrl}/api/agents/by-meet/${meetId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+    });
+
+    if (!agentResponse.ok) {
+      console.error("Failed to fetch agent data");
+      return NextResponse.json(
+        { error: "Failed to fetch agent data" },
+        { status: 500 }
+      );
+    }
+
+    const agentData = await agentResponse.json();
+    agentId = agentData.agent_id || agentData.agentId;
+
+    if (!agentId) {
+      console.error("agent_id not found in API response");
+      return NextResponse.json(
+        { error: "agent_id not found in API response" },
+        { status: 500 }
+      );
+    }
+
+    console.log("Successfully fetched agent_id:", agentId);
+  } catch (error) {
+    console.error("Error fetching agent_id:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch agent_id dynamically" },
       { status: 500 }
     );
   }
