@@ -12,7 +12,10 @@
     "@elevenlabs/elevenlabs-js": "^2.12.2",
     "@elevenlabs/react": "^0.5.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.3.0",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/three": "^0.180.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cookies-next": "^6.1.0",
@@ -24,10 +27,11 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.454.0",
     "next": "^15.5.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@types/node": "^20",

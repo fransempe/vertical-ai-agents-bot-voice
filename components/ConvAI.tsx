@@ -7,7 +7,17 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { useConversation } from "@elevenlabs/react";
-import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+import type { AgentState } from "./ui/orb";
+
+const Orb = dynamic(() => import("./ui/orb").then((mod) => mod.Orb), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full flex items-center justify-center">
+      <div className="h-32 w-32 rounded-full bg-gradient-to-br from-[#292AD3] to-[#6B7FFF] opacity-50 animate-pulse" />
+    </div>
+  ),
+});
 
 async function requestMicrophonePermission() {
   try {
@@ -153,6 +163,13 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
     router.push(`/interview/closing${query.toString() ? `?${query.toString()}` : ""}`);
   }, [conversation, router, meetId, candidateId]);
 
+  // Determine agent state based on conversation status
+  const getAgentState = (): AgentState => {
+    if (conversation.status !== "connected") return null;
+    if (conversation.isSpeaking) return "talking";
+    return "listening";
+  };
+
   return (
     <div className={"flex justify-center items-center gap-x-4 w-full"}>
       <Card
@@ -172,21 +189,21 @@ export function ConvAI({ meetId, candidateId }: ConvAIProps) {
             </div>
           </CardHeader>
           <div className={"flex flex-col gap-y-6 text-center items-center"}>
-            <div
-              className={cn(
-                "orb my-12 mx-12",
-                conversation.status === "connected" && conversation.isSpeaking
-                  ? "orb-active animate-orb"
-                  : conversation.status === "connected"
-                  ? "animate-orb-slow orb-inactive"
-                  : "orb-inactive"
-              )}
-            ></div>
-
-            <div className="text-primary text-lg font-medium">
-              {conversation.status === "connected" ? "Entrevista conectada" : "Entrevista desconectada"}
+            <div className="relative h-48 w-48">
+              <Orb 
+                colors={["#292AD3", "#6B7FFF"]} 
+                agentState={getAgentState()}
+                className="h-full w-full"
+              />
             </div>
 
+            <div className="text-primary text-lg font-medium">
+              {conversation.status === "connected" 
+                ? conversation.isSpeaking 
+                  ? "Hablando..." 
+                  : "Escuchando..."
+                : "Entrevista desconectada"}
+            </div>
 
             <Button
               variant={"default"}

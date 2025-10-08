@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
     return (
     <html lang="en" className={`h-full w-full ${dmSans.variable} ${nunito.variable} ${poppins.variable} ${shareTechMono.variable}`}>
-        <body className={`antialiased w-full h-full flex flex-col`}>
+        <body className={`antialiased w-full h-full flex flex-col`} suppressHydrationWarning>
         <div className="flex flex-col flex-grow w-full items-center justify-center">
             {children}
         </div>
