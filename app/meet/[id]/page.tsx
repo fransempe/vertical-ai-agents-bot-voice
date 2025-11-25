@@ -35,15 +35,15 @@ const getStatusColor = (status: Interview["status"]) => {
 const getTypeLabel = (type: Interview["type"]) => {
   switch (type) {
     case "technical":
-      return "Technical Interview";
+      return "Entrevista Técnica";
     case "behavioral":
-      return "Behavioral Interview";
+      return "Entrevista Conductual";
     case "cultural-fit":
-      return "Cultural Fit Interview";
+      return "Entrevista de Ajuste Cultural";
     case "screening":
-      return "Initial Screening";
+      return "Screening Inicial";
     default:
-      return "Interview";
+      return "Entrevista";
   }
 };
 
@@ -119,17 +119,17 @@ function MeetContent() {
             </div>
             <div className="space-y-2">
               <CardTitle className="text-3xl font-bold text-red-800">
-                Access Denied
+                Acceso Denegado
               </CardTitle>
               <CardDescription className="text-lg text-red-600">
-                A valid authentication token is required to access this
-                interview session.
+                Se requiere un token de autenticación válido para acceder a esta
+                sesión de entrevista.
               </CardDescription>
             </div>
             <div className="pt-4">
               <p className="text-sm text-red-500">
-                Please contact your interviewer or administrator to obtain the
-                proper access credentials.
+                Por favor, contacte a su entrevistador o administrador para obtener las
+                credenciales de acceso adecuadas.
               </p>
             </div>
           </CardHeader>
@@ -145,7 +145,7 @@ function MeetContent() {
           <CardContent className="flex flex-col items-center space-y-4 py-8">
             <LoadingSpinner />
             <p className="text-lg text-gray-600">
-              Loading meeting information...
+              Cargando información de la reunión...
             </p>
           </CardContent>
         </Card>
@@ -159,10 +159,10 @@ function MeetContent() {
         <Card className="w-full max-w-lg shadow-xl border-red-200">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-red-800">
-              Error Loading Meeting
+              Error al Cargar la Reunión
             </CardTitle>
             <CardDescription className="text-red-600">
-              Please contact your interviewer.
+              Por favor, contacte a su entrevistador.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -176,10 +176,10 @@ function MeetContent() {
         <Card className="w-full max-w-lg shadow-xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-gray-800">
-              No Meeting Found
+              No se Encontró la Reunión
             </CardTitle>
             <CardDescription className="text-gray-600">
-              No meeting data was found for the provided token.
+              No se encontraron datos de reunión para el token proporcionado.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -197,7 +197,7 @@ function MeetContent() {
         <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 flex justify-center">
           <div className="backdrop-blur-[2px] text-white  px-4 py-3 max-w-xl text-center">
             <p className="text-lg sm:text-base md:text-xl font-medium">
-              You&apos;re about to join an AI-powered interview session
+              Estás a punto de unirte a una sesión de entrevista impulsada por IA
             </p>
           </div>
         </div>
@@ -216,23 +216,23 @@ function MeetContent() {
               </div>
             </div>
             <CardTitle className="text-xl !mt-4">
-              Interview Meeting
+              Reunión de Entrevista
             </CardTitle>
             <CardDescription className="text-lg">
-              You&apos;re about to join an AI-powered interview session
+              Estás a punto de unirte a una sesión de entrevista impulsada por IA
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-lg text-gray-600">Interview ID: </label>
+                <label className="text-lg text-gray-600">ID de Entrevista: </label>
                 <p className="font-mono text-lg">{interview.id}</p>
               </div>
 
               <div className="space-y-2">
                 <label className="text-lg font-medium text-gray-600">
-                  Status:{" "}
+                  Estado:{" "}
                 </label>
                 <Badge className={getStatusColor(interview.status)}>
                   {interview.status.charAt(0).toUpperCase() +
@@ -241,19 +241,19 @@ function MeetContent() {
               </div>
 
               <div className="flex">
-                <label className="text-lg text-gray-600">Type: </label>
+                <label className="text-lg text-gray-600">Tipo: </label>
                 <p className="text-lg ms-2">{getTypeLabel(interview.type)}</p>
               </div>
 
               <div className="flex">
-                <label className="text-lg text-gray-600">Duration: </label>
-                <p className="text-lg ms-2">8 minutes</p>
+                <label className="text-lg text-gray-600">Duración: </label>
+                <p className="text-lg ms-2">8 minutos</p>
               </div>
             </div>
 
             <div className="border-t pt-4">
               <label className="text-sm font-medium text-gray-600">
-                Candidate Information
+                Información del Candidato
               </label>
               <div className="mt-2 space-y-1">
                 <p className="text-xl font-semibold">
@@ -288,7 +288,7 @@ function MeetContent() {
                   }
                 }}
               >
-                Join Interview
+                Unirse a la Entrevista
               </Button>
             </div>
           </CardContent>
@@ -303,7 +303,7 @@ export default function MeetPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-          <div className="text-lg">Loading...</div>
+          <div className="text-lg">Cargando...</div>
         </div>
       }
     >
